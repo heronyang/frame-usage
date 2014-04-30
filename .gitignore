@@ -30,3 +30,6 @@ modules.order
 
 .svn/
 reclim-me
+
+.frame_usage*
+.tmp_versions

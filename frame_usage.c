@@ -1,13 +1,6 @@
 /*
  * OSDI - Lab 7
  *
-traverse all the process
-    if process’s name = reclim-me
-        foreach (vm_area->start , vm_area->end) 
-            get PageTable
-               getPageDescripter
-                 print three different states
-
    Three different states:
 1.  The frame usage of process before malloc
 2.  The frame usage of process before access memory 
@@ -25,11 +18,10 @@ static int frame_usage_init(void) {
     struct task_struct *task;
     struct mm_struct *mm;
     struct vm_area_struct *vma;
-    unsigned long address, ve;
+    unsigned long address;
     unsigned long sum;
     unsigned long vmas;
-    unsigned long rss; //, my_rss;
-    unsigned long pfn;
+    unsigned long rss;
 
     pgd_t *pgd;
 	pud_t *pud;
@@ -50,12 +42,6 @@ static int frame_usage_init(void) {
             rss = get_mm_rss(mm);
             printk("rss = %lu\n", rss);
 
-            /*
-            my_rss = ((unsigned long)atomic_long_read(&(mm)->_file_rss) +
-                      (unsigned long)atomic_long_read(&(mm)->_anon_rss) );
-            printk("my_rss = %lu\n", my_rss);
-            */
-
             sum = 0;
             vmas = 0;
             for( vma=mm->mmap ; vma!=NULL ; vma=vma->vm_next) {
@@ -75,7 +61,6 @@ static int frame_usage_init(void) {
                     ptl = pte_lockptr(mm, pmd);
                     spin_lock(ptl);
                     if (pte_present(*pte)) {
-                        pfn = pte_pfn(*pte);    // get page frame number by page table entry
                         sum ++;
                     }
                     pte_unmap_unlock(pte, ptl);
