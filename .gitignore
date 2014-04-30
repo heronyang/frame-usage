@@ -21,3 +21,12 @@
 *.i*86
 *.x86_64
 *.hex
+
+*.mod.c
+*.mod.o
+
+Module.symvers
+modules.order
+
+.svn/
+reclim-me
